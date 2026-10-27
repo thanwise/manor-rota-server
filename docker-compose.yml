@@ -1,0 +1,35 @@
+# Your own server (VPS) with a domain name and free automatic HTTPS from Caddy.
+# 1. Point your domain (for example rota.yourshop.co.uk) at the server's IP address.
+# 2. Copy .env.example to .env and fill it in.
+# 3. docker compose up -d
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATA_DIR: /data
+      TRUST_PROXY: "1"
+      MANAGER_PIN: ${MANAGER_PIN:-}
+      STAFF_PIN: ${STAFF_PIN:-}
+    volumes:
+      - rota-data:/data
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env, for example rota.yourshop.co.uk}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+
+volumes:
+  rota-data:
+  caddy-data:
+  caddy-config:

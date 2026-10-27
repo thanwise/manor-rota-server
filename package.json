@@ -1,0 +1,17 @@
+{
+  "name": "manor-rota-server",
+  "version": "2.0.0",
+  "description": "Shift rota server and iPhone web app for Manor",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "express": "^4.21.2"
+  }
+}

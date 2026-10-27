@@ -1,0 +1,26 @@
+# Render Blueprint: New > Blueprint, pick this repo. Render asks for the PINs on first deploy.
+# A persistent disk needs a paid instance type (Starter or above). A service with a disk runs as one instance.
+services:
+  - type: web
+    name: manor-rota
+    runtime: node
+    plan: starter
+    region: frankfurt
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    disk:
+      name: rota-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATA_DIR
+        value: /var/data
+      - key: TRUST_PROXY
+        value: "1"
+      - key: MANAGER_PIN
+        sync: false
+      - key: STAFF_PIN
+        sync: false
